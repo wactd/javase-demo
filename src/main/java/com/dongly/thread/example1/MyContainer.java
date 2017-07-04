@@ -30,10 +30,12 @@ public class MyContainer {
         Condition condition1 = lock.newCondition();
         Condition condition2 = lock.newCondition();
 
+        final Integer counter = 10;
+
         new Thread(() -> {
             lock.lock();
             try {
-                for (int i = 0; i <= 10; i++) {
+                for (int i = 0; i <= counter; i++) {
                     TimeUnit.MILLISECONDS.sleep(200L);
                     int size = container.size();
                     if (size % 5 == 0) {
@@ -58,7 +60,7 @@ public class MyContainer {
                     if (size % 5 == 0) {
                         System.out.println("当前容器大小： " + size);
                         condition1.signal();
-                        if (size == 10) break;
+                        if (size == counter) break;
                     }
                     System.out.println("-------------------");
                     condition2.await();
